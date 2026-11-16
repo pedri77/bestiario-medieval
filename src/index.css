@@ -1,0 +1,193 @@
+@import "tailwindcss";
+
+/* Lenis: su CSS no se exporta como ruta, se copia aquí. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Lapislázuli y oro (variante): `void` es el azul ultramar; `oro` el pan de oro; `pergamino` la página. */
+@theme {
+  --font-display: "UnifrakturMaguntia", "Old English Text MT", serif;
+  --font-sans: "EB Garamond", Garamond, Georgia, serif;
+  --font-cifra: "EB Garamond", Georgia, serif;
+  --font-mono: "EB Garamond", Georgia, serif;
+
+  --color-void: oklch(27% 0.11 266);
+  --color-superficie: oklch(23% 0.1 266);
+  --color-elevado: oklch(33% 0.12 266);
+  --color-borde: oklch(45% 0.1 266);
+  --color-rojo: oklch(56% 0.19 32);
+  --color-rojo-profundo: oklch(48% 0.17 30);
+  --color-oro: oklch(80% 0.13 84);
+  --color-oro-2: oklch(67% 0.12 75);
+  --color-pergamino: oklch(92% 0.035 82);
+  --color-pergamino-2: oklch(86% 0.045 78);
+  --color-tinta: oklch(22% 0.025 45);
+  --color-texto: oklch(95% 0.02 85);
+  --color-texto-2: oklch(85% 0.03 90);
+  --color-texto-3: oklch(72% 0.04 95);
+
+  --text-hero: clamp(3.5rem, 11vw, 11rem);
+  --text-hero--line-height: 0.95;
+
+  --text-display: clamp(2.25rem, 5vw, 4.5rem);
+  --text-display--line-height: 1.05;
+
+  --text-lead: clamp(1.25rem, 1.8vw, 1.625rem);
+  --text-lead--line-height: 1.45;
+
+  --text-body: clamp(1.0625rem, 1.2vw, 1.25rem);
+  --text-body--line-height: 1.55;
+
+  --text-etiqueta: 0.875rem;
+  --text-etiqueta--line-height: 1.3;
+  --text-etiqueta--letter-spacing: 0.08em;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-void);
+  }
+  body {
+    margin: 0;
+    background: var(--color-void);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-oro);
+    color: var(--color-tinta);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-oro);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+}
+
+@layer utilities {
+  .h-pantalla {
+    height: 100svh;
+  }
+
+  /* Esquinas de visor del HUD. */
+  .esquinas {
+    --l: 14px;
+    background:
+      linear-gradient(currentColor, currentColor) top left / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) top left / 1px var(--l),
+      linear-gradient(currentColor, currentColor) top right / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) top right / 1px var(--l),
+      linear-gradient(currentColor, currentColor) bottom left / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) bottom left / 1px var(--l),
+      linear-gradient(currentColor, currentColor) bottom right / var(--l) 1px,
+      linear-gradient(currentColor, currentColor) bottom right / 1px var(--l);
+    background-repeat: no-repeat;
+  }
+
+  /* Entradas: 600 ms con escalonado de 90 ms (--i). */
+  [data-aparece] {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 0.6s cubic-bezier(0.2, 0.7, 0.1, 1),
+      transform 0.6s cubic-bezier(0.2, 0.7, 0.1, 1);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  [data-aparece].dentro {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-aparece] {
+      transform: none;
+      transition-duration: 0.01ms;
+    }
+  }
+}
+
+@keyframes entra-paso {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+}
+
+/* Versalitas para etiquetas: sustituyen a la monoespaciada en esta web. */
+.versalitas {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+}
+
+/* Fondo de lapislázuli con estrellas doradas, como los cielos de las miniaturas. */
+.lapis {
+  background-color: var(--color-void);
+  background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--color-oro) 55%, transparent) 1px, transparent 1.6px);
+  background-size: 34px 34px;
+}
+
+/* Pergamino: tono cálido con viñeteado suave en los bordes. */
+.pergamino {
+  background-color: var(--color-pergamino);
+  background-image: radial-gradient(ellipse at 50% 45%, transparent 55%, color-mix(in oklch, var(--color-oro-2) 30%, transparent));
+  color: var(--color-tinta);
+}
+
+/* Marco de oro de las miniaturas. */
+.marco-oro {
+  box-shadow: 0 0 0 3px var(--color-oro), 0 0 0 6px var(--color-rojo-profundo), 0 0 0 8px var(--color-oro);
+}
+
+/* Etiqueta anclada a un punto del mapa (patrón 13 adaptado). */
+.ancla-punto {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  border: 2px solid var(--color-oro);
+  box-shadow: 0 0 0 5px color-mix(in oklch, var(--color-rojo) 45%, transparent);
+}
+
+/* Deslizador de «lo que creían / lo que es». */
+.deslizador {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.deslizador::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--color-oro-2);
+  border-radius: 2px;
+}
+.deslizador::-moz-range-track {
+  height: 4px;
+  background: var(--color-oro-2);
+  border-radius: 2px;
+}
+.deslizador::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: var(--color-oro);
+  border: 3px solid var(--color-rojo-profundo);
+}
+.deslizador::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-oro);
+  border: 3px solid var(--color-rojo-profundo);
+}
